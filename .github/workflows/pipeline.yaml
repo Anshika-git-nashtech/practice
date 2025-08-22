@@ -1,4 +1,4 @@
-name: CI/CD Pipeline (Minikube)
+name: CI/CD Pipeline (DockerHub)
 
 on:
   push:
@@ -12,27 +12,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Start Minikube
-        uses: medyagh/setup-minikube@latest
+      # Log in to DockerHub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker image in Minikube
+      # Build and push Docker image
+      - name: Build and push Docker image
         run: |
-          eval $(minikube docker-env)
-          docker build -t anshikavarshney:myapp ./application
+          docker build -t anshikavarshney/myapp:latest ./application
+          docker push anshikavarshney/myapp:latest
 
-      - name: Deploy to Minikube
+      # Apply Kubernetes manifests (optional step)
+      # Comment this out if you only want build+push
+      - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f k8s/deploy.yaml
           kubectl apply -f k8s/service.yaml
           kubectl apply -f k8s/hpa.yaml
-
-      - name: Verify Deployment
-        run: |
-          echo "=== Pods ==="
-          kubectl get pods -o wide
-          echo "=== Services ==="
-          kubectl get svc
-          echo "=== HPA ==="
-          kubectl get hpa
-          echo "=== Deployment Rollout Status ==="
-          kubectl rollout status deployment/my-app
