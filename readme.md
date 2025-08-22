@@ -12,7 +12,7 @@ The app is deployed with resource limits, exposed via a service, and automatical
 
 ## 🛠️ How to Run
 1. Clone this repo
-2. Update GitHub username in `deployment.yaml`
+2. Update dockerhub username in `deployment.yaml`
 3. Push code to `main` branch → GitHub Actions will build & deploy automatically
 4. Check HPA:
    ```bash

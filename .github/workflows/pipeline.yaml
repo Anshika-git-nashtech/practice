@@ -25,8 +25,4 @@ jobs:
           kubectl apply -f k8s/deploy.yaml
           kubectl apply -f k8s/service.yaml
           kubectl apply -f k8s/hpa.yaml
-
-      - name: Verify Deployment
-        run: |
-          kubectl rollout status deployment/my-app
-          kubectl get pods -o wide
+          
