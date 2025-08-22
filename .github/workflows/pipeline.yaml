@@ -18,7 +18,7 @@ jobs:
       - name: Build Docker image in Minikube
         run: |
           eval $(minikube docker-env)
-          docker build -t anshikavarshney:myapp ./app
+          docker build -t anshikavarshney:myapp ./application
 
       - name: Deploy to Minikube
         run: |
